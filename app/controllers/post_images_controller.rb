@@ -4,7 +4,7 @@ class PostImagesController < ApplicationController
     @post_image = PostImage.new #画像投稿のための空箱用意
   end
   
-  def create　#投稿データの保存
+  def create #投稿データの保存
     @post_image = PostImage.new(post_image_params) #投稿するデータをPostImageモデルに紐づくデータとして保存する準備
     @post_image.user_id = current_user.id #@post_imageのuser_idをcurrent_user.id(今ログインしているユーザーのID)に指定することで投稿で0タに、今ログイン中のユーザのIDを持たせることができる
     @post_image.save
@@ -19,10 +19,15 @@ class PostImagesController < ApplicationController
     @post_image = PostImage.find(params[:id])
   end
   
+  def destroy
+    @post_image = PostImage.find(params[:id])
+    @post_image.destroy
+    redirect_to '/post_images'
+  end
   #投稿データのストロングパラメータ
   private
   
   def post_image_params
-    params.require(:post_image).permit(:shop_name, :caption)
+    params.require(:post_image).permit(:shop_name, :caption, :image)
   end
 end
